@@ -1,0 +1,25 @@
+name: CI
+on:
+  push:
+    branches: [ master, develop, 'release/**' ]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: 'maven'
+
+      - name: Maven package (skip tests)
+        run: mvn -B -DskipTests package
+
+      - name: Docker build
+        run: docker build -t sem-ci:latest .
