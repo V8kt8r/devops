@@ -1,8 +1,10 @@
 name: CI
+
 on:
   push:
     branches: [ master, develop, 'release/**' ]
   pull_request:
+    branches: [ master ]
 
 jobs:
   build:
@@ -23,3 +25,7 @@ jobs:
 
       - name: Docker build
         run: docker build -t sem-ci:latest .
+
+      - name: Run Docker container
+        run: docker run --rm sem-ci:latest
+
